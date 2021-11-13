@@ -53,22 +53,27 @@ public class BudgetService {
                 if (budget.getYearMonthFromBudget().isBefore(startYearMonth) || budget.getYearMonthFromBudget().isAfter(endYearMonth)) {
                     continue;
                 }
-                LocalDate overlappingStart;
-                LocalDate overlappingEnd;
-                if (startYearMonth.format(DateTimeFormatter.ofPattern("yyyyMM")).equals(budget.getYearMonth())) {
-                    overlappingStart = startDate;
-                    overlappingEnd = budget.lastDay();
-                } else if (endYearMonth.format(DateTimeFormatter.ofPattern("yyyyMM")).equals(budget.getYearMonth())) {
-                    overlappingStart = budget.firstDay();
-                    overlappingEnd = endDate;
-                } else {
-                    overlappingStart = budget.firstDay();
-                    overlappingEnd = budget.lastDay();
-                }
-                long overlappingDays = DAYS.between(overlappingStart, overlappingEnd) + 1;
+                long overlappingDays = getOverlappingDays(startDate, endDate, startYearMonth, endYearMonth, budget);
                 totalAmount += budget.dailyAmount() * overlappingDays;
             }
             return totalAmount;
         }
+    }
+
+    private long getOverlappingDays(LocalDate startDate, LocalDate endDate, YearMonth startYearMonth, YearMonth endYearMonth, Budget budget) {
+        LocalDate overlappingStart;
+        LocalDate overlappingEnd;
+        if (startYearMonth.format(DateTimeFormatter.ofPattern("yyyyMM")).equals(budget.getYearMonth())) {
+            overlappingStart = startDate;
+            overlappingEnd = budget.lastDay();
+        } else if (endYearMonth.format(DateTimeFormatter.ofPattern("yyyyMM")).equals(budget.getYearMonth())) {
+            overlappingStart = budget.firstDay();
+            overlappingEnd = endDate;
+        } else {
+            overlappingStart = budget.firstDay();
+            overlappingEnd = budget.lastDay();
+        }
+        long overlappingDays = DAYS.between(overlappingStart, overlappingEnd) + 1;
+        return overlappingDays;
     }
 }
