@@ -50,6 +50,19 @@ class BudgetSystemApplicationTests {
     }
 
     @Test
+    void no_overlapping() {
+        LocalDate s = LocalDate.parse("20211031", DateTimeFormatter.ofPattern("yyyyMMdd"));
+        LocalDate e = LocalDate.parse("20211104", DateTimeFormatter.ofPattern("yyyyMMdd"));
+
+        when(budgetRepo.getAll()).thenReturn(asList(
+                new Budget("202110", 31)
+                , new Budget("202111", 3000)
+                , new Budget("202112", 3100)
+        ));
+        Assertions.assertEquals(1 + 100 * 4, budgetService.query(s, e));
+    }
+
+    @Test
     void singleDay() {
         when(budgetRepo.getAll()).thenReturn(asList(new Budget("202111", 3000)));
         LocalDate start = LocalDate.of(2021, 11, 2);
