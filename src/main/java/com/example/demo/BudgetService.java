@@ -59,16 +59,16 @@ public class BudgetService {
             double startBudget = budgets.getOrDefault(startYearMonth.format(DateTimeFormatter.ofPattern("yyyyMM")), 0) / startYearMonth.lengthOfMonth();
             budgets.remove(startYearMonth.format(DateTimeFormatter.ofPattern("yyyyMM")));
             int startDays = startYearMonth.lengthOfMonth() - startDate.getDayOfMonth() + 1;
-            double aa = startBudget * startDays;
+            double amountOfStartBudget = startBudget * startDays;
 
             double endBudget = budgets.getOrDefault(endYearMonth.format(DateTimeFormatter.ofPattern("yyyyMM")), 0) / endYearMonth.lengthOfMonth();
             budgets.remove(endYearMonth.format(DateTimeFormatter.ofPattern("yyyyMM")));
             int endDays = endDate.getDayOfMonth();
-            double bb = endBudget * endDays;
+            double amountOfEndBudget = endBudget * endDays;
 
-            double cc = budgets.values().stream().reduce(0, Integer::sum);
+            double amountOfMiddleBudgets = budgets.values().stream().reduce(0, Integer::sum);
 
-            return aa + bb + cc;
+            return amountOfStartBudget + amountOfEndBudget + amountOfMiddleBudgets;
         }
     }
 }
