@@ -34,6 +34,9 @@ public class BudgetService {
                             && (endYearMonth.isAfter(recordYearMonth) || endYearMonth.compareTo(recordYearMonth) == 0);
                 }
         ).collect(Collectors.toMap(Budget::getYearMonth, Budget::getAmount));
+        if (budgets.isEmpty()) {
+            return 0;
+        }
 
         // 起大於訖 return 0
         // 年月一樣
@@ -49,9 +52,6 @@ public class BudgetService {
 //        startDate.lengthOfMonth()
 
         if (startYearMonth.equals(endYearMonth)) {
-            if (budgets.isEmpty()) {
-                return 0;
-            }
             double oneDayBudget = budgets.getOrDefault(startYearMonth.format(DateTimeFormatter.ofPattern("yyyyMM")), 0) / startYearMonth.lengthOfMonth();
             int day = endDate.getDayOfMonth() - startDate.getDayOfMonth() + 1;
             return oneDayBudget * day;
