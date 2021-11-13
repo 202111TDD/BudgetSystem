@@ -19,6 +19,9 @@ public class BudgetService {
     IBudgetRepo budgetRepo;
 
     public double query(LocalDate startDate, LocalDate endDate) {
+        if (startDate.isAfter(endDate)) {
+            return 0;
+        }
 
         YearMonth startYearMonth = YearMonth.from(startDate);
         YearMonth endYearMonth = YearMonth.from(endDate);
@@ -44,10 +47,6 @@ public class BudgetService {
         //"各月的天數" X "每個budget的每天的預算"
 
 //        startDate.lengthOfMonth()
-
-        if (startDate.isAfter(endDate)) {
-            return 0;
-        }
 
         if (startYearMonth.equals(endYearMonth)) {
             if (budgets.isEmpty()) {
