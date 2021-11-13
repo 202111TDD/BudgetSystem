@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.Temporal;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,12 +53,17 @@ public class BudgetService {
                 YearMonth yearMonthFromBudget = budget.getYearMonthFromBudget();
                 long overlappingDays = 0;
                 if (startYearMonth.format(DateTimeFormatter.ofPattern("yyyyMM")).equals(budget.getYearMonth())) {
-                    overlappingDays = DAYS.between(startDate, budget.lastDay()) + 1;
+                    LocalDate overlappingStart = startDate;
+                    LocalDate overlappingEnd = budget.lastDay();
+                    overlappingDays = DAYS.between(overlappingStart, overlappingEnd) + 1;
                 } else if (endYearMonth.format(DateTimeFormatter.ofPattern("yyyyMM")).equals(budget.getYearMonth())) {
-                    overlappingDays = DAYS.between(budget.firstDay(), endDate) + 1;
+                    LocalDate overlappingStart = budget.firstDay();
+                    LocalDate overlappingEnd = endDate;
+                    overlappingDays = DAYS.between(overlappingStart, overlappingEnd) + 1;
                 } else if (yearMonthFromBudget.isAfter(startYearMonth) && yearMonthFromBudget.isBefore(endYearMonth)) {
-                    overlappingDays = DAYS.between(budget.firstDay(), budget.lastDay()) + 1;
-//                    overlappingDays = budget.days();
+                    LocalDate overlappingStart = budget.firstDay();
+                    LocalDate overlappingEnd = budget.lastDay();
+                    overlappingDays = DAYS.between(overlappingStart, overlappingEnd) + 1;
                 }
                 totalAmount += budget.dailyAmount() * overlappingDays;
             }
