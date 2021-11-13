@@ -50,10 +50,14 @@ public class BudgetService {
                 if (budget.getYearMonthFromBudget().isBefore(startYearMonth) || budget.getYearMonthFromBudget().isAfter(endYearMonth)) {
                     continue;
                 }
-                long overlappingDays = new Period(startDate, endDate).getOverlappingDays(new Period(budget.firstDay(), budget.lastDay()));
+                long overlappingDays = new Period(startDate, endDate).getOverlappingDays(createPeriod(budget));
                 totalAmount += budget.dailyAmount() * overlappingDays;
             }
             return totalAmount;
         }
+    }
+
+    private Period createPeriod(Budget budget) {
+        return new Period(budget.firstDay(), budget.lastDay());
     }
 }
