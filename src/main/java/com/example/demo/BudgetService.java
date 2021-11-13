@@ -56,16 +56,16 @@ public class BudgetService {
             if (budgets.isEmpty()) {
                 return 0;
             }
-            double oneDayBudget = budgets.get(startYearMonth.format(DateTimeFormatter.ofPattern("yyyyMM"))) / startYearMonth.lengthOfMonth();
+            double oneDayBudget = budgets.getOrDefault(startYearMonth.format(DateTimeFormatter.ofPattern("yyyyMM")), 0) / startYearMonth.lengthOfMonth();
             int day = endDate.getDayOfMonth() - startDate.getDayOfMonth() + 1;
             return oneDayBudget * day;
         } else {
-            double startBudget = budgets.get(startYearMonth.format(DateTimeFormatter.ofPattern("yyyyMM"))) / startYearMonth.lengthOfMonth();
+            double startBudget = budgets.getOrDefault(startYearMonth.format(DateTimeFormatter.ofPattern("yyyyMM")), 0) / startYearMonth.lengthOfMonth();
             budgets.remove(startYearMonth.format(DateTimeFormatter.ofPattern("yyyyMM")));
             int startDays = startYearMonth.lengthOfMonth() - startDate.getDayOfMonth() + 1;
             double aa = startBudget * startDays;
 
-            double endBudget = budgets.get(endYearMonth.format(DateTimeFormatter.ofPattern("yyyyMM"))) / endYearMonth.lengthOfMonth();
+            double endBudget = budgets.getOrDefault(endYearMonth.format(DateTimeFormatter.ofPattern("yyyyMM")), 0) / endYearMonth.lengthOfMonth();
             budgets.remove(endYearMonth.format(DateTimeFormatter.ofPattern("yyyyMM")));
             int endDays = endDate.getDayOfMonth();
             double bb = endBudget * endDays;
