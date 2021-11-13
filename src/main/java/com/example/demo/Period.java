@@ -27,16 +27,15 @@ public class Period {
         LocalDate overlappingStart = getStartDate().isAfter(budget.firstDay())
                 ? getStartDate()
                 : budget.firstDay();
-        LocalDate overlappingEnd;
+        LocalDate overlappingEnd = getEndDate().isBefore(budget.lastDay())
+                ? getEndDate()
+                : budget.lastDay();
         if (YearMonth.from(getStartDate()).format(DateTimeFormatter.ofPattern("yyyyMM")).equals(budget.getYearMonth())) {
-//            overlappingStart = getStartDate();
-            overlappingEnd = budget.lastDay();
+//            overlappingEnd = budget.lastDay();
         } else if (YearMonth.from(getEndDate()).format(DateTimeFormatter.ofPattern("yyyyMM")).equals(budget.getYearMonth())) {
-//            overlappingStart = budget.firstDay();
-            overlappingEnd = getEndDate();
+//            overlappingEnd = getEndDate();
         } else {
-//            overlappingStart = budget.firstDay();
-            overlappingEnd = budget.lastDay();
+//            overlappingEnd = budget.lastDay();
         }
         return DAYS.between(overlappingStart, overlappingEnd) + 1;
     }
