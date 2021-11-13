@@ -66,4 +66,12 @@ class BudgetSystemApplicationTests {
 		Assertions.assertEquals(3000+6200,budgetService.query(s, e));
 	}
 
+	@Test
+	void errorDate() {
+		LocalDate s = LocalDate.parse("20211130", DateTimeFormatter.ofPattern("yyyyMMdd"));
+		LocalDate e = LocalDate.parse("20211101", DateTimeFormatter.ofPattern("yyyyMMdd"));
+
+		when(budgetRepo.getAll()).thenReturn(Arrays.asList(new Budget("202111", 3000)));
+		Assertions.assertEquals(0,budgetService.query(s, e));
+	}
 }
