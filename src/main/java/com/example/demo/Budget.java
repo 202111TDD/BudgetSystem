@@ -18,6 +18,10 @@ public class Budget {
         return getYearMonthFromBudget().lengthOfMonth();
     }
 
+    public Temporal firstDay() {
+        return getYearMonthFromBudget().atDay(1);
+    }
+
     public int getAmount() {
         return amount;
     }
