@@ -14,10 +14,10 @@ public class Period {
     }
 
     long getOverlappingDays(Period another) {
-        if (startDate.isAfter(endDate)) {
+        if (isInvalid()) {
             return 0;
         }
-        if (endDate.isBefore(another.startDate) || startDate.isAfter(another.endDate)) {
+        if (hasNoOverlapping(another)) {
             return 0;
         }
         LocalDate firstDay = another.startDate;
@@ -29,5 +29,13 @@ public class Period {
                 ? endDate
                 : lastDay;
         return DAYS.between(overlappingStart, overlappingEnd) + 1;
+    }
+
+    private boolean hasNoOverlapping(Period another) {
+        return endDate.isBefore(another.startDate) || startDate.isAfter(another.endDate);
+    }
+
+    private boolean isInvalid() {
+        return startDate.isAfter(endDate);
     }
 }
