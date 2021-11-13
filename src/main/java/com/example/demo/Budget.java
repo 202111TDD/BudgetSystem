@@ -13,12 +13,8 @@ public class Budget {
         this.amount = amount;
     }
 
-    public String getYearMonth() {
-        return yearMonth;
-    }
-
-    public void setYearMonth(String yearMonth) {
-        this.yearMonth = yearMonth;
+    public int days() {
+        return getYearMonthFromBudget().lengthOfMonth();
     }
 
     public int getAmount() {
@@ -27,6 +23,14 @@ public class Budget {
 
     public void setAmount(int amount) {
         this.amount = amount;
+    }
+
+    public String getYearMonth() {
+        return yearMonth;
+    }
+
+    public void setYearMonth(String yearMonth) {
+        this.yearMonth = yearMonth;
     }
 
     YearMonth getYearMonthFromBudget() {

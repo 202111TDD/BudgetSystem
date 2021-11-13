@@ -49,7 +49,7 @@ public class BudgetService {
             for (Budget budget : budgets) {
                 YearMonth yearMonthFromBudget = budget.getYearMonthFromBudget();
                 if (startYearMonth.format(DateTimeFormatter.ofPattern("yyyyMM")).equals(budget.getYearMonth())) {
-                    double amountOfStart = budget.getAmount() / (double) startYearMonth.lengthOfMonth();
+                    double amountOfStart = budget.getAmount() / (double) budget.days();
 //                    double amountOfStart = budget.getAmount() / (double) startYearMonth.lengthOfMonth();
                     int startDays = startYearMonth.lengthOfMonth() - startDate.getDayOfMonth() + 1;
                     totalAmount += amountOfStart * startDays;
