@@ -35,22 +35,28 @@ public class BudgetService {
         //"各月的天數" X "每個budget的每天的預算"
 
         List<Budget> budgets = budgetRepo.getAll();
-        if (startYearMonth.equals(endYearMonth)) {
-            Optional<Budget> budget = budgets.stream()
-                    .filter(b -> startYearMonth.format(DateTimeFormatter.ofPattern("yyyyMM")).equals(b.getYearMonth()))
-                    .findFirst();
-
-            double amount = budget.map(Budget::getAmount).orElse(0);
-            double oneDayBudget = amount / (double) startYearMonth.lengthOfMonth();
-            int day = endDate.getDayOfMonth() - startDate.getDayOfMonth() + 1;
-            return oneDayBudget * day;
-        } else {
-            double totalAmount = 0;
-            Period period = new Period(startDate, endDate);
-            for (Budget budget : budgets) {
-                totalAmount += budget.overlappingAmount(period);
-            }
-            return totalAmount;
+        double totalAmount = 0;
+        Period period = new Period(startDate, endDate);
+        for (Budget budget : budgets) {
+            totalAmount += budget.overlappingAmount(period);
         }
+        return totalAmount;
+//        if (startYearMonth.equals(endYearMonth)) {
+//            Optional<Budget> budget = budgets.stream()
+//                    .filter(b -> startYearMonth.format(DateTimeFormatter.ofPattern("yyyyMM")).equals(b.getYearMonth()))
+//                    .findFirst();
+//
+//            double amount = budget.map(Budget::getAmount).orElse(0);
+//            double oneDayBudget = amount / (double) startYearMonth.lengthOfMonth();
+//            int day = endDate.getDayOfMonth() - startDate.getDayOfMonth() + 1;
+//            return oneDayBudget * day;
+//        } else {
+//            double totalAmount = 0;
+//            Period period = new Period(startDate, endDate);
+//            for (Budget budget : budgets) {
+//                totalAmount += budget.overlappingAmount(period);
+//            }
+//            return totalAmount;
+//        }
     }
 }
