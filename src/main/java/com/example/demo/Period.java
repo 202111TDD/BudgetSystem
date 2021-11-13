@@ -1,8 +1,6 @@
 package com.example.demo;
 
 import java.time.LocalDate;
-import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -15,28 +13,13 @@ public class Period {
         this.endDate = endDate;
     }
 
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
     long getOverlappingDays(Budget budget) {
-        LocalDate overlappingStart = getStartDate().isAfter(budget.firstDay())
-                ? getStartDate()
+        LocalDate overlappingStart = startDate.isAfter(budget.firstDay())
+                ? startDate
                 : budget.firstDay();
-        LocalDate overlappingEnd = getEndDate().isBefore(budget.lastDay())
-                ? getEndDate()
+        LocalDate overlappingEnd = endDate.isBefore(budget.lastDay())
+                ? endDate
                 : budget.lastDay();
-        if (YearMonth.from(getStartDate()).format(DateTimeFormatter.ofPattern("yyyyMM")).equals(budget.getYearMonth())) {
-//            overlappingEnd = budget.lastDay();
-        } else if (YearMonth.from(getEndDate()).format(DateTimeFormatter.ofPattern("yyyyMM")).equals(budget.getYearMonth())) {
-//            overlappingEnd = getEndDate();
-        } else {
-//            overlappingEnd = budget.lastDay();
-        }
         return DAYS.between(overlappingStart, overlappingEnd) + 1;
     }
 }
