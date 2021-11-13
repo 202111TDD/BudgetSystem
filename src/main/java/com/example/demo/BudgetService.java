@@ -16,9 +16,6 @@ public class BudgetService {
     IBudgetRepo budgetRepo;
 
     public double query(LocalDate startDate, LocalDate endDate) {
-        if (startDate.isAfter(endDate)) {
-            return 0;
-        }
 
         Period period = new Period(startDate, endDate);
         return budgetRepo.getAll()
