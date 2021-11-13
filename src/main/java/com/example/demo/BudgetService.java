@@ -9,6 +9,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 @Component
 public class BudgetService {
 
@@ -48,16 +50,14 @@ public class BudgetService {
             double totalAmount = 0;
             for (Budget budget : budgets) {
                 YearMonth yearMonthFromBudget = budget.getYearMonthFromBudget();
-                int overlappingDays = 0;
+                long overlappingDays = 0;
                 if (startYearMonth.format(DateTimeFormatter.ofPattern("yyyyMM")).equals(budget.getYearMonth())) {
-                    overlappingDays = startYearMonth.lengthOfMonth() - startDate.getDayOfMonth() + 1;
-//                    totalAmount += budget.dailyAmount() * overlappingDays;
+                    overlappingDays = DAYS.between(startDate, budget.lastDay()) + 1;
+//                    overlappingDays = startYearMonth.lengthOfMonth() - startDate.getDayOfMonth() + 1;
                 } else if (endYearMonth.format(DateTimeFormatter.ofPattern("yyyyMM")).equals(budget.getYearMonth())) {
                     overlappingDays = endDate.getDayOfMonth();
-//                    totalAmount += budget.dailyAmount() * overlappingDays;
                 } else if (yearMonthFromBudget.isAfter(startYearMonth) && yearMonthFromBudget.isBefore(endYearMonth)) {
                     overlappingDays = budget.days();
-//                    totalAmount += budget.dailyAmount() * overlappingDays;
                 }
                 totalAmount += budget.dailyAmount() * overlappingDays;
             }

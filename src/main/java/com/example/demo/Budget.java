@@ -2,6 +2,7 @@ package com.example.demo;
 
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.Temporal;
 
 public class Budget {
 
@@ -19,6 +20,10 @@ public class Budget {
 
     public int getAmount() {
         return amount;
+    }
+
+    public Temporal lastDay() {
+        return getYearMonthFromBudget().atEndOfMonth();
     }
 
     public void setAmount(int amount) {
