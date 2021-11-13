@@ -9,8 +9,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
-import static java.time.temporal.ChronoUnit.DAYS;
-
 @Component
 public class BudgetService {
 
@@ -52,26 +50,10 @@ public class BudgetService {
                 if (budget.getYearMonthFromBudget().isBefore(startYearMonth) || budget.getYearMonthFromBudget().isAfter(endYearMonth)) {
                     continue;
                 }
-                long overlappingDays = getOverlappingDays(new Period(startDate, endDate), budget);
+                long overlappingDays = new Period(startDate, endDate).getOverlappingDays(budget);
                 totalAmount += budget.dailyAmount() * overlappingDays;
             }
             return totalAmount;
         }
-    }
-
-    private long getOverlappingDays(Period period, Budget budget) {
-        LocalDate overlappingStart;
-        LocalDate overlappingEnd;
-        if (YearMonth.from(period.getStartDate()).format(DateTimeFormatter.ofPattern("yyyyMM")).equals(budget.getYearMonth())) {
-            overlappingStart = period.getStartDate();
-            overlappingEnd = budget.lastDay();
-        } else if (YearMonth.from(period.getEndDate()).format(DateTimeFormatter.ofPattern("yyyyMM")).equals(budget.getYearMonth())) {
-            overlappingStart = budget.firstDay();
-            overlappingEnd = period.getEndDate();
-        } else {
-            overlappingStart = budget.firstDay();
-            overlappingEnd = budget.lastDay();
-        }
-        return DAYS.between(overlappingStart, overlappingEnd) + 1;
     }
 }
