@@ -52,19 +52,22 @@ public class BudgetService {
             for (Budget budget : budgets) {
                 YearMonth yearMonthFromBudget = budget.getYearMonthFromBudget();
                 long overlappingDays = 0;
+                LocalDate overlappingStart = null;
+                LocalDate overlappingEnd = null;
                 if (startYearMonth.format(DateTimeFormatter.ofPattern("yyyyMM")).equals(budget.getYearMonth())) {
-                    LocalDate overlappingStart = startDate;
-                    LocalDate overlappingEnd = budget.lastDay();
-                    overlappingDays = DAYS.between(overlappingStart, overlappingEnd) + 1;
+                    overlappingStart = startDate;
+                    overlappingEnd = budget.lastDay();
+//                    overlappingDays = DAYS.between(overlappingStart, overlappingEnd) + 1;
                 } else if (endYearMonth.format(DateTimeFormatter.ofPattern("yyyyMM")).equals(budget.getYearMonth())) {
-                    LocalDate overlappingStart = budget.firstDay();
-                    LocalDate overlappingEnd = endDate;
-                    overlappingDays = DAYS.between(overlappingStart, overlappingEnd) + 1;
+                    overlappingStart = budget.firstDay();
+                    overlappingEnd = endDate;
+//                    overlappingDays = DAYS.between(overlappingStart, overlappingEnd) + 1;
                 } else if (yearMonthFromBudget.isAfter(startYearMonth) && yearMonthFromBudget.isBefore(endYearMonth)) {
-                    LocalDate overlappingStart = budget.firstDay();
-                    LocalDate overlappingEnd = budget.lastDay();
-                    overlappingDays = DAYS.between(overlappingStart, overlappingEnd) + 1;
+                    overlappingStart = budget.firstDay();
+                    overlappingEnd = budget.lastDay();
+//                    overlappingDays = DAYS.between(overlappingStart, overlappingEnd) + 1;
                 }
+                overlappingDays = DAYS.between(overlappingStart, overlappingEnd) + 1;
                 totalAmount += budget.dailyAmount() * overlappingDays;
             }
             return totalAmount;
