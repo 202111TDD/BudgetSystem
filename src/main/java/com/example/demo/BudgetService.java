@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 @Component
 public class BudgetService {
 
-
     @Autowired
     IBudgetRepo budgetRepo;
 
@@ -24,35 +23,33 @@ public class BudgetService {
         YearMonth startYearMonth = YearMonth.from(startDate);
         YearMonth endYearMonth = YearMonth.from(endDate);
 
-
         Map<String, Integer> budgets = budgetRepo.getAll().stream().filter(b ->
                 {
                     YearMonth recordYearMonth = YearMonth.parse(b.getYearMonth(), DateTimeFormatter.ofPattern("yyyyMM"));
 
-                    return (startYearMonth.isBefore(recordYearMonth) || startYearMonth.compareTo(recordYearMonth) ==0 )
-                            && (endYearMonth.isAfter(recordYearMonth)|| endYearMonth.compareTo(recordYearMonth) ==0 );
+                    return (startYearMonth.isBefore(recordYearMonth) || startYearMonth.compareTo(recordYearMonth) == 0)
+                            && (endYearMonth.isAfter(recordYearMonth) || endYearMonth.compareTo(recordYearMonth) == 0);
                 }
-        ).collect(Collectors.toMap(Budget::getYearMonth,Budget::getAmount));
+        ).collect(Collectors.toMap(Budget::getYearMonth, Budget::getAmount));
 
         // 起大於訖 return 0
         // 年月一樣
-            // 這個月有幾天，算出"每天的預算"
-            // 算出"區間有幾天"
-            // 算出"區間預算"
+        // 這個月有幾天，算出"每天的預算"
+        // 算出"區間有幾天"
+        // 算出"區間預算"
         // 年月不同
-            // 取得區間內所有 Budget
-            // 算出"每個budget的每天的預算"
-            // 算出區間內"各月的天數"
-            //"各月的天數" X "每個budget的每天的預算"
+        // 取得區間內所有 Budget
+        // 算出"每個budget的每天的預算"
+        // 算出區間內"各月的天數"
+        //"各月的天數" X "每個budget的每天的預算"
 
 //        startDate.lengthOfMonth()
-
 
         if (startDate.isAfter(endDate)) {
             return 0;
         }
 
-        if (startYearMonth.compareTo(endYearMonth) == 0) {
+        if (startYearMonth.equals(endYearMonth)) {
             if (budgets.isEmpty()) {
                 return 0;
             }
@@ -72,9 +69,7 @@ public class BudgetService {
 
             double cc = budgets.values().stream().reduce(0, Integer::sum);
 
-            return aa+bb+cc;
+            return aa + bb + cc;
         }
-
     }
-
 }
