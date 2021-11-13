@@ -55,7 +55,8 @@ public class BudgetService {
                     int endDays = endDate.getDayOfMonth();
                     totalAmount += budget.dailyAmount() * endDays;
                 } else if (yearMonthFromBudget.isAfter(startYearMonth) && yearMonthFromBudget.isBefore(endYearMonth)) {
-                    totalAmount += budget.getAmount();
+                    totalAmount += budget.dailyAmount() * budget.days();
+//                    totalAmount += budget.getAmount();
                 }
             }
             return totalAmount;
