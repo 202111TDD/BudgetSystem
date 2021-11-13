@@ -52,22 +52,22 @@ public class BudgetService {
                 if (budget.getYearMonthFromBudget().isBefore(startYearMonth) || budget.getYearMonthFromBudget().isAfter(endYearMonth)) {
                     continue;
                 }
-                long overlappingDays = getOverlappingDays(startDate, endDate, budget);
+                long overlappingDays = getOverlappingDays(new Period(startDate, endDate), budget);
                 totalAmount += budget.dailyAmount() * overlappingDays;
             }
             return totalAmount;
         }
     }
 
-    private long getOverlappingDays(LocalDate startDate, LocalDate endDate, Budget budget) {
+    private long getOverlappingDays(Period period, Budget budget) {
         LocalDate overlappingStart;
         LocalDate overlappingEnd;
-        if (YearMonth.from(startDate).format(DateTimeFormatter.ofPattern("yyyyMM")).equals(budget.getYearMonth())) {
-            overlappingStart = startDate;
+        if (YearMonth.from(period.getStartDate()).format(DateTimeFormatter.ofPattern("yyyyMM")).equals(budget.getYearMonth())) {
+            overlappingStart = period.getStartDate();
             overlappingEnd = budget.lastDay();
-        } else if (YearMonth.from(endDate).format(DateTimeFormatter.ofPattern("yyyyMM")).equals(budget.getYearMonth())) {
+        } else if (YearMonth.from(period.getEndDate()).format(DateTimeFormatter.ofPattern("yyyyMM")).equals(budget.getYearMonth())) {
             overlappingStart = budget.firstDay();
-            overlappingEnd = endDate;
+            overlappingEnd = period.getEndDate();
         } else {
             overlappingStart = budget.firstDay();
             overlappingEnd = budget.lastDay();
