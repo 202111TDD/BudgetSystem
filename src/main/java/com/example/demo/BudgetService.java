@@ -50,7 +50,9 @@ public class BudgetService {
         } else {
             double totalAmount = 0;
             for (Budget budget : budgets) {
-
+                if (budget.getYearMonthFromBudget().isBefore(startYearMonth) || budget.getYearMonthFromBudget().isAfter(endYearMonth)) {
+                    continue;
+                }
                 LocalDate overlappingStart;
                 LocalDate overlappingEnd;
                 if (startYearMonth.format(DateTimeFormatter.ofPattern("yyyyMM")).equals(budget.getYearMonth())) {
