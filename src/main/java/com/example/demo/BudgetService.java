@@ -49,9 +49,10 @@ public class BudgetService {
         } else {
             double totalAmount = 0;
             for (Budget budget : budgets) {
-                YearMonth yearMonthFromBudget = YearMonth.parse(budget.getYearMonth(), DateTimeFormatter.ofPattern("yyyyMM"));
+                YearMonth yearMonthFromBudget = getYearMonthFromBudget(budget);
                 if (startYearMonth.format(DateTimeFormatter.ofPattern("yyyyMM")).equals(budget.getYearMonth())) {
                     double amountOfStart = budget.getAmount() / (double) startYearMonth.lengthOfMonth();
+//                    double amountOfStart = budget.getAmount() / (double) startYearMonth.lengthOfMonth();
                     int startDays = startYearMonth.lengthOfMonth() - startDate.getDayOfMonth() + 1;
                     totalAmount += amountOfStart * startDays;
                 } else if (endYearMonth.format(DateTimeFormatter.ofPattern("yyyyMM")).equals(budget.getYearMonth())) {
@@ -87,5 +88,9 @@ public class BudgetService {
 //
 //            return amountOfStartBudget + amountOfEndBudget + amountOfMiddleBudgets;
         }
+    }
+
+    private YearMonth getYearMonthFromBudget(Budget budget) {
+        return YearMonth.parse(budget.getYearMonth(), DateTimeFormatter.ofPattern("yyyyMM"));
     }
 }
