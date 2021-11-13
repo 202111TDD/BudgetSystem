@@ -36,4 +36,8 @@ public class Budget {
     YearMonth getYearMonthFromBudget() {
         return YearMonth.parse(getYearMonth(), DateTimeFormatter.ofPattern("yyyyMM"));
     }
+
+    double dailyAmount() {
+        return getAmount() / (double) days();
+    }
 }
