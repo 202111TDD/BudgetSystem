@@ -48,16 +48,18 @@ public class BudgetService {
             double totalAmount = 0;
             for (Budget budget : budgets) {
                 YearMonth yearMonthFromBudget = budget.getYearMonthFromBudget();
+                int overlappingDays = 0;
                 if (startYearMonth.format(DateTimeFormatter.ofPattern("yyyyMM")).equals(budget.getYearMonth())) {
-                    int overlappingDays = startYearMonth.lengthOfMonth() - startDate.getDayOfMonth() + 1;
-                    totalAmount += budget.dailyAmount() * overlappingDays;
+                    overlappingDays = startYearMonth.lengthOfMonth() - startDate.getDayOfMonth() + 1;
+//                    totalAmount += budget.dailyAmount() * overlappingDays;
                 } else if (endYearMonth.format(DateTimeFormatter.ofPattern("yyyyMM")).equals(budget.getYearMonth())) {
-                    int overlappingDays = endDate.getDayOfMonth();
-                    totalAmount += budget.dailyAmount() * overlappingDays;
+                    overlappingDays = endDate.getDayOfMonth();
+//                    totalAmount += budget.dailyAmount() * overlappingDays;
                 } else if (yearMonthFromBudget.isAfter(startYearMonth) && yearMonthFromBudget.isBefore(endYearMonth)) {
-                    int overlappingDays = budget.days();
-                    totalAmount += budget.dailyAmount() * overlappingDays;
+                    overlappingDays = budget.days();
+//                    totalAmount += budget.dailyAmount() * overlappingDays;
                 }
+                totalAmount += budget.dailyAmount() * overlappingDays;
             }
             return totalAmount;
         }
