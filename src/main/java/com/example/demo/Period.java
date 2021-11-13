@@ -14,10 +14,7 @@ public class Period {
     }
 
     long getOverlappingDays(Period another) {
-        if (isInvalid()) {
-            return 0;
-        }
-        if (hasNoOverlapping(another)) {
+        if (isInvalid() || hasNoOverlapping(another)) {
             return 0;
         }
         LocalDate firstDay = another.startDate;
