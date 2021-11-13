@@ -26,10 +26,6 @@ public class Budget {
         return amount;
     }
 
-    public LocalDate lastDay() {
-        return getYearMonthFromBudget().atEndOfMonth();
-    }
-
     public void setAmount(int amount) {
         this.amount = amount;
     }
@@ -42,11 +38,19 @@ public class Budget {
         this.yearMonth = yearMonth;
     }
 
-    YearMonth getYearMonthFromBudget() {
-        return YearMonth.parse(getYearMonth(), DateTimeFormatter.ofPattern("yyyyMM"));
+    public LocalDate lastDay() {
+        return getYearMonthFromBudget().atEndOfMonth();
+    }
+
+    Period createPeriod() {
+        return new Period(firstDay(), lastDay());
     }
 
     double dailyAmount() {
         return getAmount() / (double) days();
+    }
+
+    YearMonth getYearMonthFromBudget() {
+        return YearMonth.parse(getYearMonth(), DateTimeFormatter.ofPattern("yyyyMM"));
     }
 }
