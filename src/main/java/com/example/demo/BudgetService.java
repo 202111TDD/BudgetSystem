@@ -49,11 +49,11 @@ public class BudgetService {
             for (Budget budget : budgets) {
                 YearMonth yearMonthFromBudget = budget.getYearMonthFromBudget();
                 if (startYearMonth.format(DateTimeFormatter.ofPattern("yyyyMM")).equals(budget.getYearMonth())) {
-                    double amountOfStart = budget.getAmount() / (double) budget.days();
+                    double amountOfStart = dailyAmount(budget);
                     int startDays = startYearMonth.lengthOfMonth() - startDate.getDayOfMonth() + 1;
                     totalAmount += amountOfStart * startDays;
                 } else if (endYearMonth.format(DateTimeFormatter.ofPattern("yyyyMM")).equals(budget.getYearMonth())) {
-                    double amountOfEnd = budget.getAmount() / (double) budget.days();
+                    double amountOfEnd = dailyAmount(budget);
                     int endDays = endDate.getDayOfMonth();
                     totalAmount += amountOfEnd * endDays;
                 } else if (yearMonthFromBudget.isAfter(startYearMonth) && yearMonthFromBudget.isBefore(endYearMonth)) {
@@ -61,29 +61,10 @@ public class BudgetService {
                 }
             }
             return totalAmount;
-
-//            Optional<Budget> startBudget = budgets.stream()
-//                    .filter(b -> startYearMonth.format(DateTimeFormatter.ofPattern("yyyyMM")).equals(b.getYearMonth()))
-//                    .findFirst();
-//            double amountOfStart = startBudget.map(Budget::getAmount).orElse(0) / (double) startYearMonth.lengthOfMonth();
-//            int startDays = startYearMonth.lengthOfMonth() - startDate.getDayOfMonth() + 1;
-//            double amountOfStartBudget = amountOfStart * startDays;
-
-//            Optional<Budget> endBudget = budgets.stream()
-//                    .filter(b -> endYearMonth.format(DateTimeFormatter.ofPattern("yyyyMM")).equals(b.getYearMonth()))
-//                    .findFirst();
-//            double amountOfEnd = endBudget.map(Budget::getAmount).orElse(0) / (double) endYearMonth.lengthOfMonth();
-//            int endDays = endDate.getDayOfMonth();
-//            double amountOfEndBudget = amountOfEnd * endDays;
-//
-//            double amountOfMiddleBudgets = budgets.stream().filter(b ->
-//                    {
-//                        YearMonth recordYearMonth = YearMonth.parse(b.getYearMonth(), DateTimeFormatter.ofPattern("yyyyMM"));
-//                        return recordYearMonth.isAfter(startYearMonth) && recordYearMonth.isBefore(endYearMonth);
-//                    }
-//            ).map(Budget::getAmount).reduce(0, Integer::sum);
-//
-//            return amountOfStartBudget + amountOfEndBudget + amountOfMiddleBudgets;
         }
+    }
+
+    private double dailyAmount(Budget budget) {
+        return budget.getAmount() / (double) budget.days();
     }
 }
