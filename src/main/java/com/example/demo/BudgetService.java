@@ -46,11 +46,12 @@ public class BudgetService {
             return oneDayBudget * day;
         } else {
             double totalAmount = 0;
+            Period period = new Period(startDate, endDate);
             for (Budget budget : budgets) {
                 if (budget.getYearMonthFromBudget().isBefore(startYearMonth) || budget.getYearMonthFromBudget().isAfter(endYearMonth)) {
                     continue;
                 }
-                long overlappingDays = new Period(startDate, endDate).getOverlappingDays(budget.createPeriod());
+                long overlappingDays = period.getOverlappingDays(budget.createPeriod());
                 totalAmount += budget.dailyAmount() * overlappingDays;
             }
             return totalAmount;
