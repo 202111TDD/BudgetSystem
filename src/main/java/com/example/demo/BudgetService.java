@@ -48,9 +48,13 @@ public class BudgetService {
             double totalAmount = 0;
             Period period = new Period(startDate, endDate);
             for (Budget budget : budgets) {
-                totalAmount += budget.dailyAmount() * period.getOverlappingDays(budget.createPeriod());
+                totalAmount += overlappingAmount(period, budget);
             }
             return totalAmount;
         }
+    }
+
+    private double overlappingAmount(Period period, Budget budget) {
+        return budget.dailyAmount() * period.getOverlappingDays(budget.createPeriod());
     }
 }
