@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 
 public class Budget {
 
@@ -25,5 +27,9 @@ public class Budget {
 
     public void setAmount(int amount) {
         this.amount = amount;
+    }
+
+    YearMonth getYearMonthFromBudget() {
+        return YearMonth.parse(getYearMonth(), DateTimeFormatter.ofPattern("yyyyMM"));
     }
 }

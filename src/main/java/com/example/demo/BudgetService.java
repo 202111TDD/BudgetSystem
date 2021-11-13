@@ -8,8 +8,6 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Component
 public class BudgetService {
@@ -49,7 +47,7 @@ public class BudgetService {
         } else {
             double totalAmount = 0;
             for (Budget budget : budgets) {
-                YearMonth yearMonthFromBudget = getYearMonthFromBudget(budget);
+                YearMonth yearMonthFromBudget = budget.getYearMonthFromBudget();
                 if (startYearMonth.format(DateTimeFormatter.ofPattern("yyyyMM")).equals(budget.getYearMonth())) {
                     double amountOfStart = budget.getAmount() / (double) startYearMonth.lengthOfMonth();
 //                    double amountOfStart = budget.getAmount() / (double) startYearMonth.lengthOfMonth();
@@ -88,9 +86,5 @@ public class BudgetService {
 //
 //            return amountOfStartBudget + amountOfEndBudget + amountOfMiddleBudgets;
         }
-    }
-
-    private YearMonth getYearMonthFromBudget(Budget budget) {
-        return YearMonth.parse(budget.getYearMonth(), DateTimeFormatter.ofPattern("yyyyMM"));
     }
 }
